@@ -50,6 +50,92 @@ git branch -M main
 git push -u origin main
 ```
 
+### 2.4 解决GitHub认证问题
+
+GitHub从2021年8月起不再支持密码认证，如果遇到以下错误：
+```
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed
+```
+
+请使用以下方法之一：
+
+#### 方法1：Personal Access Token（推荐）
+
+**步骤1：创建Token**
+1. 登录GitHub，点击右上角头像 → **Settings**
+2. 左侧菜单选择 **Developer settings**
+3. 选择 **Personal access tokens** → **Tokens (classic)**
+4. 点击 **Generate new token** → **Generate new token (classic)**
+5. 填写信息：
+   - **Note**: `mysql-sea-sync-token`
+   - **Expiration**: 选择过期时间（建议1年）
+   - **Scopes**: 勾选 `repo`（完整仓库访问权限）
+6. 点击 **Generate token**
+7. **重要**: 复制生成的token（只显示一次）
+
+**步骤2：使用Token推送**
+```bash
+# 更新远程URL（将your_token替换为实际token）
+git remote set-url origin https://ghp_your_token@github.com/freecow/mysql-sea-sync.git
+
+# 推送代码
+git push -u origin main
+```
+
+#### 方法2：GitHub CLI（最简单）
+
+**安装GitHub CLI**
+```bash
+# macOS
+brew install gh
+```
+
+**认证并推送**
+```bash
+# 登录GitHub
+gh auth login
+# 选择 GitHub.com
+# 选择 HTTPS
+# 选择 Login with a web browser
+# 按提示完成认证
+
+# 推送代码
+git push -u origin main
+```
+
+#### 方法3：SSH密钥（最安全）
+
+**生成SSH密钥**
+```bash
+# 生成SSH密钥
+ssh-keygen -t ed25519 -C "your_email@example.com"
+# 按回车使用默认文件位置
+
+# 启动ssh-agent并添加密钥
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# 复制公钥到剪贴板
+cat ~/.ssh/id_ed25519.pub | pbcopy
+```
+
+**添加公钥到GitHub**
+1. 登录GitHub，头像 → **Settings** → **SSH and GPG keys**
+2. 点击 **New SSH key**，粘贴公钥
+3. 设置标题并保存
+
+**更改为SSH方式**
+```bash
+git remote set-url origin git@github.com:freecow/mysql-sea-sync.git
+git push -u origin main
+```
+
+**安全提示**
+- 不要把token提交到代码中
+- 定期更新token
+- 推荐使用GitHub CLI或SSH密钥
+
 ## 3. GitHub Actions 工作流说明
 
 ### 3.1 工作流文件位置
@@ -175,6 +261,18 @@ git push
 
 **问题**: 推送代码后没有触发构建
 **解决**: 检查分支名称是否为 `main` 或 `master`
+
+**问题**: 推送时提示 "fetch first" 错误
+**解决**: 
+```bash
+# 拉取并合并远程内容
+git pull origin main --allow-unrelated-histories --no-rebase
+
+# 如果有冲突，解决冲突后
+git add .
+git commit -m "Resolve merge conflicts"
+git push origin main
+```
 
 **问题**: 构建失败，提示依赖安装错误
 **解决**: 检查 `requirements.txt` 文件格式和内容
