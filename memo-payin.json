@@ -1,0 +1,32 @@
+{
+  "seatable": {
+    "table_name": "回款信息",
+    "name_column": "合同编号"
+  },
+  "chunk_size": 500,
+  "data_mappings": [
+    {
+      "description": "主表数据",
+      "sql_query": [
+        "SELECT",
+        "  t_payinmoney.projectcode,",
+        "  t_payinmoney.projectname,",
+        "  t_payinmoney.remarks,",
+        "  t_payinmoney.payinmoney,",
+        "  t_payinmoney.saleman,",
+        "  t_payinmoney.signmoney,",
+        "  IFNULL(t_payinmoney.payindate, '') AS payindate",
+        "FROM t_payinmoney"
+      ],
+      "field_mappings": {
+        "projectcode": "预算编号",
+        "projectname": "项目名称",
+        "remarks": "备注信息",
+        "payinmoney": "回款金额",
+        "saleman": "销售经理",
+        "signmoney": "项目合同额",
+        "payindate": "回款日期"
+      }
+    }
+  ]
+}

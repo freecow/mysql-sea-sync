@@ -1,0 +1,26 @@
+{
+  "seatable": {
+    "table_name": "OA立项编号",
+    "name_column": "合同编号"
+  },
+  "chunk_size": 300,
+  "data_mappings": [
+    {
+      "description": "主表数据",
+      "sql_query": [
+        "SELECT",
+        "  t.field0002 AS contractcode,",
+        "  t.field0151 AS contractname,",
+        "  t.field0003 AS projectname,",
+        "  t.field0154 AS projectcode",
+        "FROM formmain_3225 t"
+      ],
+      "field_mappings": {
+        "contractcode": "合同编号",
+        "contractname": "合同名称",
+        "projectname": "项目名称",
+        "projectcode": "项目编号"
+      }
+    }
+  ]
+}

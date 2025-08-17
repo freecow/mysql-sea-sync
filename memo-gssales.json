@@ -1,0 +1,69 @@
+{
+  "seatable": {
+    "table_name": "OA销售团队",
+    "name_column": "销售负责人"
+  },
+  "chunk_size": 300,
+  "data_mappings": [
+    {
+      "description": "团队人员数据",
+      "sql_query": [
+        "SELECT b.NAME AS team_name,",
+        "       CASE WHEN b.NAME = '王学东团队' THEN '王学东'",
+        "            WHEN b.NAME = '范一平团队' THEN '范一平'",
+        "            WHEN b.NAME = '马丁团队' THEN '马丁'",
+        "            WHEN b.NAME = '杨小军团队' THEN '杨小军'",
+        "            WHEN b.NAME = '商务团队' THEN '张玉凤'",
+        "            WHEN b.NAME = '张伟团队' THEN '张伟'",
+        "            WHEN b.NAME = '张利民团队' THEN '张利民'",
+        "            WHEN b.NAME = '省外陈志平团队' THEN '陈志平'",
+        "            WHEN b.NAME = '省外团队' THEN '王垒峰'",
+        "            WHEN b.NAME = '宋志伟团队' THEN '宋志伟'",
+        "            WHEN b.NAME = '省外李会兵团队' THEN '李会兵'",
+        "            WHEN b.NAME = '永骋市场部' THEN '和葆华'",
+        "            WHEN b.NAME = '信访销售组' THEN '李龙'",
+        "            ELSE '' END AS team_leader,",
+        "       a.NAME AS member_name",
+        "FROM org_member a",
+        "    JOIN org_unit b ON a.ORG_DEPARTMENT_ID = b.ID",
+        "WHERE (b.NAME LIKE '%团队%' OR b.NAME LIKE '%销售%' OR b.NAME LIKE '%市场%')",
+        "  AND a.STATE = 1",
+        "  AND a.IS_ENABLE = 1",
+        "  AND b.NAME <> '商务团队'",
+        "UNION ALL",
+        "SELECT '信访销售组' AS team_name, '李龙' AS team_leader, '李龙' AS member_name",
+        "UNION ALL",
+        "SELECT '省外团队' AS team_name, '王磊峰' AS team_leader, '王垒峰' AS member_name",
+        "UNION ALL",
+        "SELECT '永骋市场部' AS team_name, '和葆华' AS team_leader, '和葆华' AS member_name",
+        "UNION ALL",
+        "SELECT '杨小军团队' AS team_name, '杨小军' AS team_leader, '陈志玮' AS member_name",
+        "UNION ALL",
+        "SELECT '省外团队' AS team_name, '王垒峰' AS team_leader, '李刚' AS member_name",
+        "UNION ALL",
+        "SELECT '政务实施部' AS team_name, '李渊' AS team_leader, '李渊' AS member_name",
+        "UNION ALL",
+        "SELECT '研发二部' AS team_name, '韩鑫磊' AS team_leader, '韩鑫磊' AS member_name",
+        "UNION ALL",
+        "SELECT '省外团队' AS team_name, '王垒峰' AS team_leader, '李哲' AS member_name",
+        "UNION ALL",
+        "SELECT '技术中心' AS team_name, '张煇' AS team_leader, '马小娴' AS member_name",
+        "UNION ALL",
+        "SELECT '王学东团队' AS team_name, '王学东' AS team_leader, '苏素芳' AS member_name",
+        "UNION ALL",
+        "SELECT '经营管理委员会' AS team_name, '赵宝金' AS team_leader, '赵宝金' AS member_name",
+        "UNION ALL",
+        "SELECT '技术中心' AS team_name, '张煇' AS team_leader, '张煇' AS member_name",
+        "UNION ALL",
+        "SELECT '研发五部' AS team_name, '冯向阳' AS team_leader, '霍春玲' AS member_name",
+        "UNION ALL",
+        "SELECT '王学东团队' AS team_name, '王学东' AS team_leader, '马振业' AS member_name"
+      ],
+      "field_mappings": {
+        "team_name": "销售团队",
+        "team_leader": "组长",
+        "member_name": "销售负责人"
+      }
+    }
+  ]
+} 

@@ -1,0 +1,40 @@
+{
+  "seatable": {
+    "table_name": "立项研发项目",
+    "name_column": "立项编号"
+  },
+  "chunk_size": 300,
+  "data_mappings": [
+    {
+      "description": "主表数据",
+      "sql_query": [
+        "SELECT",
+        "  opm.project_code,",
+        "  opm.total_project_name,",
+        "  IFNULL(opm.project_cycle, '') AS project_cycle,",
+        "  IFNULL(opm.project_manager_name, '') AS project_manager_name,",
+        "  IFNULL(opm.build_pro_time, '') AS build_pro_time,",
+        "  IFNULL(opm.acceptance_time, '') AS acceptance_time,",
+        "  IFNULL(opm.project_member, '') AS project_member,",
+        "  IFNULL(opm.project_content, '') AS project_content,",
+        "  IFNULL(opm.project_budget, '') AS project_budget,",
+        "  COALESCE(sdd_firm_name.dict_label, opm.firm_name) AS firm_name",
+        "FROM o_project_manage opm",
+        "LEFT JOIN sys_dict_data sdd_firm_name",
+        "ON opm.firm_name = sdd_firm_name.dict_value AND sdd_firm_name.dict_type = 'firm_name'"
+      ],
+      "field_mappings": {
+        "project_code": "立项编号",
+        "total_project_name": "项目全称",
+        "project_cycle": "项目周期",
+        "project_manager_name": "项目经理",
+        "build_pro_time": "立项时间",
+        "acceptance_time": "验收时间",
+        "project_member": "项目组成员",
+        "project_content": "项目内容",
+        "project_budget": "项目预算",
+        "firm_name": "所属公司"
+      }
+    }
+  ]
+}

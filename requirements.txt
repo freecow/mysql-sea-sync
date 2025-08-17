@@ -1,0 +1,4 @@
+seatable-api
+pymysql
+python-dotenv
+pyinstaller

@@ -1,0 +1,32 @@
+{
+  "seatable": {
+    "table_name": "已中未签",
+    "name_column": "项目名称"
+  },
+  "chunk_size": 300,
+  "data_mappings": [
+    {
+      "description": "主表数据",
+      "sql_query": [
+        "SELECT",
+        "  ogm.NAME AS sales_person,",
+        "  t.field0029 AS project_name,",
+        "  t.field0048 AS bid_amount,",
+        "  t.field0067 AS bid_date",
+        "FROM",
+        "  formmain_3553 t",
+        "  LEFT JOIN org_member ogm ON t.field0032 = ogm.ID",
+        "WHERE",
+        "  t.field0081 = 2025",
+        "  AND t.field0052 = -6442186450829426215",
+        "  AND t.field0030 IS NULL"
+      ],
+      "field_mappings": {
+        "sales_person": "销售负责人",
+        "project_name": "项目名称",
+        "bid_amount": "中标金额",
+        "bid_date": "中标日期"
+      }
+    }
+  ]
+} 

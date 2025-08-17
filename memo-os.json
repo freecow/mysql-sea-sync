@@ -1,0 +1,34 @@
+{
+  "seatable": {
+    "table_name": "自有软件",
+    "name_column": "合同编号"
+  },
+  "chunk_size": 300,
+  "data_mappings": [
+    {
+      "description": "主表数据",
+      "sql_query": [
+        "SELECT",
+        "  osa.contract_code,",
+        "  osa.software_name,",
+        "  COALESCE(sdd_yf_dept.dict_label, osa.yf_dept) AS yf_dept,",
+        "  IFNULL(osa.software_amount, '') AS software_amount,",
+        "  COALESCE(sdd_has_or_not.dict_label, osa.has_detail) AS has_detail,",
+        "  IFNULL(osa.remark, '') AS remark",
+        "FROM own_software_analysis osa",
+        "LEFT JOIN sys_dict_data sdd_yf_dept",
+        "ON osa.yf_dept = sdd_yf_dept.dict_value AND sdd_yf_dept.dict_type = 'yf_dept'",
+        "LEFT JOIN sys_dict_data sdd_has_or_not",
+        "ON osa.has_detail = sdd_has_or_not.dict_value AND sdd_has_or_not.dict_type = 'has_or_not'"
+      ],
+      "field_mappings": {
+        "contract_code": "合同编号",
+        "software_name": "软件名称",
+        "yf_dept": "研发部门",
+        "software_amount": "软件金额",
+        "has_detail": "是否有明细",
+        "remark": "备注"
+      }
+    }
+  ]
+}

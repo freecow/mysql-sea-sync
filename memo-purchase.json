@@ -1,0 +1,46 @@
+{
+  "seatable": {
+    "table_name": "预算信息",
+    "name_column": "合同编号"
+  },
+  "chunk_size": 300,
+  "data_mappings": [
+    {
+      "description": "主表数据",
+      "sql_query": [
+        "SELECT",
+        "  t_project.contractcode,",
+        "  t_project.projectcode,",
+        "  t_project.cost1,",
+        "  t_project.cost2,",
+        "  t_project.cost3,",
+        "  t_project.cost4,",
+        "  t_project.cost6,",
+        "  t_project.taxcost,",
+        "  t_project.grocesscost,",
+        "  t_project.budgetyear,",
+        "  t_project.sjlr,",
+        "  t_project.salesman,",
+        "  t_project.signmoney,",
+        "  IFNULL(t_project.writerdate, '') AS writerdate",
+        "FROM t_project"
+      ],
+      "field_mappings": {
+        "contractcode": "合同编号",
+        "projectcode": "预算编号",
+        "cost1": "设备金额",
+        "cost2": "辅材金额",
+        "cost3": "其他",
+        "cost4": "技服费",
+        "cost6": "中标服务费",
+        "budgetyear": "预算年份",
+        "taxcost": "税金",
+        "grocesscost": "毛利",
+        "sjlr": "上缴利润",
+        "salesman": "销售负责人",
+        "signmoney": "预算金额",
+        "writerdate": "预算录入时间"
+      }
+    }
+  ]
+}

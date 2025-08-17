@@ -1,0 +1,34 @@
+{
+  "seatable": {
+    "table_name": "OA项目编号",
+    "name_column": "项目编号"
+  },
+  "chunk_size": 300,
+  "data_mappings": [
+    {
+      "description": "项目综合数据",
+      "sql_query": [
+        "select t1.field0007 proNo,t1.field0044 proName,t.NAME,t2.SHOWVALUE,'售前' type",
+        "from formmain_3227 t1,org_member t,ctp_enum_item t2",
+        "WHERE t.id = t1.field0054 and t1.field0077 = t2.ID",
+        "union all",
+        "select t.field0002 proNo,t.field0010 proName,t1.NAME, t2.SHOWVALUE,IF(t.field0020 is null ,'公共','合同') type",
+        "from formmain_3568 t",
+        "LEFT JOIN org_member t1 on t.field0020 = t1.id",
+        "LEFT JOIN ctp_enum_item t2 on t.field0409 = t2.id",
+        "union all",
+        "select t.field0033 proNo,t.field0002 proName,t1.NAME,t2.SHOWVALUE,'研发' type",
+        "from formmain_3462 t",
+        "LEFT JOIN org_member t1 on t.field0073 = t1.id",
+        "LEFT JOIN ctp_enum_item t2 on t.field0042 = t2.id"
+      ],
+      "field_mappings": {
+        "proNo": "项目编号",
+        "proName": "项目名称",
+        "NAME": "销售负责人",
+        "SHOWVALUE": "项目状态",
+        "type": "项目类型"
+      }
+    }
+  ]
+}
