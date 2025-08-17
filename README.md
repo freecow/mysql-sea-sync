@@ -9,6 +9,7 @@
 - **智能数据映射**：自动处理字段映射和数据类型转换
 - **批量处理**：支持大数据量分批同步
 - **交互式菜单**：循环菜单设计，可连续执行多个任务
+- **跨平台构建**：自动构建Windows/Linux/macOS版本
 
 ## 📋 支持的同步任务
 
@@ -27,7 +28,18 @@
 
 ## 🚀 快速开始
 
-### 开发环境运行
+### 方式1：下载可执行文件（推荐）
+
+1. **下载**: 访问 [Releases](../../releases) 页面下载对应平台版本
+   - Windows: `mysql-sea-sync-windows.exe`
+   - Linux: `mysql-sea-sync-linux`
+   - macOS: `mysql-sea-sync-macos`
+
+2. **配置**: 下载配置文件模板，配置数据库连接信息
+
+3. **运行**: 直接运行可执行文件
+
+### 方式2：开发环境运行
 
 1. **安装依赖**
    ```bash
@@ -43,30 +55,6 @@
 3. **运行程序**
    ```bash
    python main.py
-   ```
-
-### 生产部署（推荐）
-
-1. **一键打包**
-   ```bash
-   python quick_deploy.py
-   ```
-
-2. **发送部署包**
-   - 将生成的压缩文件发送给使用者
-   - 或发送整个 `mysql-seatable-sync-deploy` 文件夹
-
-3. **使用者操作**
-   ```bash
-   # 解压并配置
-   cp .env.example .env
-   # 编辑 .env 填入数据库信息
-   
-   # 运行（Windows）
-   mysql-seatable-sync.exe
-   
-   # 运行（macOS/Linux）
-   ./mysql-seatable-sync
    ```
 
 ## ⚙️ 配置说明
@@ -113,13 +101,14 @@ SEATABLE_SERVER_URL=https://cloud.seatable.io
 - **配置管理**：python-dotenv + JSON配置
 - **数据处理**：支持Decimal、日期格式转换
 - **错误处理**：自动重试机制
+- **自动构建**：GitHub Actions跨平台构建
 
 ### 数据流程
 
 1. **连接数据源**：根据任务类型连接对应MySQL数据库
 2. **执行查询**：根据配置文件执行SQL查询
 3. **数据映射**：按照字段映射规则转换数据
-4. **清空目标表**：清空SeaTable目标表格
+4. **清空目标表**：智能清空SeaTable目标表格（支持大数据量）
 5. **批量插入**：分批插入处理后的数据
 6. **数据合并**：如需要，执行数据合并操作
 
@@ -127,14 +116,14 @@ SEATABLE_SERVER_URL=https://cloud.seatable.io
 
 ```
 mysql-sea-sync/
-├── main.py                    # 主程序文件
-├── requirements.txt           # Python依赖
-├── .env.example              # 环境变量模板
-├── memo-*.json               # 各任务配置文件
-├── build_standalone.py       # 独立打包脚本
-├── quick_deploy.py           # 一键部署脚本
-├── DEPLOYMENT.md             # 部署指南
-└── README.md                 # 本说明文件
+├── main.py                           # 主程序文件
+├── requirements.txt                  # Python依赖
+├── .env.example                     # 环境变量模板
+├── memo-*.json                      # 各任务配置文件
+├── .github/workflows/build.yml      # GitHub Actions构建配置
+├── GITHUB_ACTIONS_GUIDE.md         # GitHub自动构建指南
+├── BUILD.md                         # 构建说明
+└── README.md                        # 本说明文件
 ```
 
 ## 🛠️ 开发说明
@@ -148,7 +137,7 @@ mysql-sea-sync/
        "table_name": "目标表名",
        "name_column": "主键列名"
      },
-     "chunk_size": 300,
+     "chunk_size": 500,
      "data_mappings": [...]
    }
    ```
@@ -187,6 +176,16 @@ mysql-sea-sync/
 }
 ```
 
+## 🏗️ 自动构建
+
+本项目使用GitHub Actions自动构建多平台可执行文件：
+
+- **触发条件**: 推送代码到main分支或创建Release
+- **构建平台**: Windows、Linux、macOS
+- **下载方式**: 从Actions页面下载Artifacts或Release页面下载
+
+详细说明请参考 [GitHub Actions构建指南](GITHUB_ACTIONS_GUIDE.md)
+
 ## 🔒 安全注意事项
 
 1. **数据库权限**：确保数据库用户只有必要的读取权限
@@ -206,5 +205,5 @@ mysql-sea-sync/
 ---
 
 **作者**: Zhanghui  
-**版本**: 2025-08-05  
+**版本**: 2025-08-17  
 **许可**: 企业内部使用
