@@ -1,6 +1,6 @@
 name: Build Executables
 
-# Auto-build for multiple platforms
+# Auto-build for multiple platforms - updated
 on:
   push:
     branches: [ main, master ]
