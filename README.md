@@ -82,16 +82,60 @@ SEATABLE_SERVER_URL=https://cloud.seatable.io
 
 每个同步任务对应一个JSON配置文件：
 
-- `memo-contract.json` - 合同同步配置
-- `memo-os.json` - 自有软件同步配置
-- `memo-progress.json` - 项目进度同步配置
-- 等等...
+| 配置文件 | 任务名称 | 说明 |
+|---------|----------|------|
+| `memo-contract.json` | 合同同步 | 合同相关数据同步 |
+| `memo-os.json` | 自有软件同步 | 自有软件项目数据 |
+| `memo-progress.json` | 项目进度同步 | 项目进度跟踪数据 |
+| `memo-rd.json` | 预算同步 | 预算管理数据 |
+| `memo-worktime.json` | 工时数据同步 | 工时统计数据 |
+| `memo-payin.json` | 回款信息同步 | 财务回款数据 |
+| `memo-pi.json` | OA项目编号同步 | OA系统项目编号 |
+| `memo-project.json` | OA立项编号同步 | OA系统立项编号 |
+| `memo-gssales.json` | OA销售团队同步 | 销售团队信息 |
+| `memo-yzwq.json` | 已中未签同步 | 中标未签约项目 |
+| `memo-outsource.json` | 立项研发同步 | 研发项目立项数据 |
+| `memo-purchase.json` | 外包同步 | 外包项目数据 |
 
-配置文件包含：
-- SeaTable表格映射信息
-- 数据字段映射规则
-- SQL查询语句
-- 数据合并规则
+#### 配置文件结构
+
+每个配置文件包含以下核心部分：
+
+```json
+{
+  "seatable": {
+    "table_name": "目标表名",
+    "name_column": "主键列名"
+  },
+  "chunk_size": 500,
+  "data_mappings": [
+    {
+      "description": "数据描述",
+      "sql_query": ["SELECT语句"],
+      "field_mappings": {
+        "mysql_字段": "seatable_字段"
+      },
+      "merge_rules": {
+        "merge_into": "主表数据",
+        "on": "关联字段",
+        "target_field": "目标字段"
+      }
+    }
+  ]
+}
+```
+
+#### 配置说明
+
+- **seatable**: SeaTable表格映射信息
+  - `table_name`: 目标SeaTable表格名称
+  - `name_column`: 用于标识的主键列名
+- **chunk_size**: 批处理大小，影响同步性能
+- **data_mappings**: 数据映射规则数组
+  - `description`: 数据集描述
+  - `sql_query`: MySQL查询语句（可分行）
+  - `field_mappings`: 字段名映射关系
+  - `merge_rules`: 数据合并规则（可选）
 
 ## 🔧 技术架构
 
