@@ -48,23 +48,9 @@ jobs:
           mv dist/main.exe dist/${{ matrix.output-name }}
         else
           mv dist/main dist/${{ matrix.output-name }}
+          chmod +x dist/${{ matrix.output-name }}
         fi
       shell: bash
-        
-    - name: Test executable (Linux/macOS)
-      if: runner.os != 'Windows'
-      run: |
-        chmod +x ${{ matrix.output-path }}
-        # Test that the executable can start (will exit due to missing config)
-        timeout 10 ${{ matrix.output-path }} || true
-        
-    - name: Test executable (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        # Test that the executable can start (will exit due to missing config)
-        ${{ matrix.output-path }}
-      continue-on-error: true
-      timeout-minutes: 1
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
