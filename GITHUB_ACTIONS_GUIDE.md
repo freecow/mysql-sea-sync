@@ -283,6 +283,34 @@ git push origin main
 **问题**: 可执行文件无法运行
 **解决**: 检查目标平台的系统要求和依赖
 
+**问题**: Release上传失败 "Resource not accessible by integration"
+**解决**: 这是GitHub Actions权限问题，需要：
+1. 仓库Settings → Actions → General → Workflow permissions → 选择 "Read and write permissions"
+2. 或在工作流文件中添加权限配置：
+```yaml
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+```
+
+**问题**: 重复创建同一版本Release时总是使用旧的工作流配置
+**原因**: Release基于Git tag触发，tag指向特定commit，使用该commit时的工作流版本
+**解决**: 
+- **推荐**：使用递增版本号 (v1.0.0 → v1.0.1 → v1.0.2)
+- **或者**：完全删除旧tag后重建
+```bash
+# 删除本地和远程tag
+git tag -d v1.0.0
+git push origin :refs/tags/v1.0.0
+# 基于最新代码重新创建
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+**问题**: 手动运行Actions时使用了旧的工作流
+**解决**: 确保在"Run workflow"时选择正确的分支（通常是main），而不是旧的分支或commit
+
 ### 8.2 调试技巧
 - 查看Actions日志的每个步骤
 - 本地测试PyInstaller命令
