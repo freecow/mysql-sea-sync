@@ -262,89 +262,98 @@ def sync_mysql():
 def select_configuration():
     print("\n===== 同步任务选择 =====")
     
+    # 从环境变量获取SeaTable API tokens
+    def get_token(token_name):
+        token = os.getenv(token_name)
+        if not token:
+            print(f"错误: 未找到环境变量 {token_name}")
+            print("请检查 .env 文件是否正确配置")
+            return None
+        return token
+
     # 整合数据库和SeaTable表的选项
     config_options = {
         1: {
             "name": "合同同步",
             "db": "chpm_v2",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_CONTRACT"),
             "config_file": "memo-contract.json",
             "mysql_config": mysql_config_1
         },
         2: {
             "name": "自有软件同步",
             "db": "chpm_v2",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_OS"),
             "config_file": "memo-os.json",
             "mysql_config": mysql_config_1
         },
         3: {
             "name": "项目进度同步",
             "db": "chpm_v2",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_PROGRESS"),
             "config_file": "memo-progress.json",
             "mysql_config": mysql_config_1
         },
         4: {
             "name": "预算同步",
             "db": "projectmng",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_PURCHASE"),
             "config_file": "memo-purchase.json",
             "mysql_config": mysql_config_1
         },
         5: {
             "name": "工时数据同步",
             "db": "chpm_v2",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_WORKTIME"),
             "config_file": "memo-worktime.json",
             "mysql_config": mysql_config_1
         },
         6: {
             "name": "回款信息同步",
             "db": "projectmng",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_PAYIN"),
             "config_file": "memo-payin.json",
             "mysql_config": mysql_config_1
         },
         7: {
             "name": "OA项目编号同步",
             "db": "v9",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_PROJECT"),
             "config_file": "memo-project.json",
             "mysql_config": mysql_config_2
         },
         8: {
             "name": "OA立项编号同步",
             "db": "v9",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_PI"),
             "config_file": "memo-pi.json",
             "mysql_config": mysql_config_2
         },
         9: {
             "name": "OA销售团队同步",
             "db": "v9",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_GSSALES"),
             "config_file": "memo-gssales.json",
             "mysql_config": mysql_config_2
         },
         10: {
             "name": "已中未签同步",
             "db": "v9",
-            "token": "970cda1fad0a65eb71e7ff8b3d2f0fd9e519a379",
+            "token": get_token("SEATABLE_TOKEN_YZWQ"),
             "config_file": "memo-yzwq.json",
             "mysql_config": mysql_config_2
         },
         11: {
             "name": "立项研发同步",
             "db": "chpm_v2",
-            "token": "023efcc52f66a5e32c31948219605456bdce7fd3",
+            "token": get_token("SEATABLE_TOKEN_RD"),
             "config_file": "memo-rd.json",
             "mysql_config": mysql_config_1
         },
         12: {
             "name": "外包同步",
             "db": "chpm_v2",
-            "token": "1da527bff23d2a04383cf9fb632a7d4f20b2f5fa",
+            "token": get_token("SEATABLE_TOKEN_OUTSOURCE"),
             "config_file": "memo-outsource.json",
             "mysql_config": mysql_config_1
         },
@@ -378,6 +387,12 @@ def select_configuration():
     if choice == 0:
         print("\n感谢使用！再见！")
         sys.exit(0)
+    
+    # 验证token是否有效
+    if not selected_config["token"]:
+        print(f"\n错误: {selected_config['name']} 的API Token未配置")
+        print("请检查 .env 文件中的配置，然后重试")
+        return None
     
     # 设置环境变量
     os.environ["MYSQL_DB"] = selected_config["db"]
