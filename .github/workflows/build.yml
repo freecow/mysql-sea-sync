@@ -16,13 +16,13 @@ jobs:
         include:
           - os: ubuntu-latest
             output-name: mysql-sea-sync-linux
-            output-path: dist/main
+            output-path: dist/mysql-sea-sync-linux
           - os: windows-latest
             output-name: mysql-sea-sync-windows.exe
-            output-path: dist/main.exe
+            output-path: dist/mysql-sea-sync-windows.exe
           - os: macos-latest
             output-name: mysql-sea-sync-macos
-            output-path: dist/main
+            output-path: dist/mysql-sea-sync-macos
     
     steps:
     - name: Checkout code
@@ -41,6 +41,15 @@ jobs:
     - name: Build executable with PyInstaller
       run: |
         pyinstaller --onefile --console --name main main.py
+        
+    - name: Rename executable for release
+      run: |
+        if [ "${{ runner.os }}" = "Windows" ]; then
+          mv dist/main.exe dist/${{ matrix.output-name }}
+        else
+          mv dist/main dist/${{ matrix.output-name }}
+        fi
+      shell: bash
         
     - name: Test executable (Linux/macOS)
       if: runner.os != 'Windows'
@@ -66,11 +75,8 @@ jobs:
         
     - name: Upload to release (if release)
       if: github.event_name == 'release'
-      uses: actions/upload-release-asset@v1
+      uses: softprops/action-gh-release@v2
+      with:
+        files: ${{ matrix.output-path }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ${{ matrix.output-path }}
-        asset_name: ${{ matrix.output-name }}
-        asset_content_type: application/octet-stream
