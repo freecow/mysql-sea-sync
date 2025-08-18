@@ -418,7 +418,7 @@ if __name__ == '__main__':
             selected_config = select_configuration()
             
             # 加载选定的配置文件
-            with open(selected_config['config_file'], 'r') as f:
+            with open(selected_config['config_file'], 'r', encoding='utf-8') as f:
                 config = json.load(f)
             
             # 设置全局变量
