@@ -1,0 +1,37 @@
+{
+  "seatable": {
+    "table_name": "your_table_name",
+    "name_column": "your_identifier_column"
+  },
+  "chunk_size": 100,
+  "data_mappings": [
+    {
+      "description": "example_data_mapping",
+      "sql_query": [
+        "SELECT",
+        "  column1,",
+        "  column2,",
+        "  column3",
+        "FROM your_table_name",
+        "WHERE your_condition = 'value'"
+      ],
+      "seatable_mappings": {
+        "column1": "target_column1",
+        "column2": "target_column2",
+        "column3": "target_column3"
+      }
+    }
+  ],
+  "mysql_config": {
+    "host": "your_mysql_host",
+    "port": 3306,
+    "database": "your_database_name",
+    "user": "your_username",
+    "password": "your_password"
+  },
+  "seatable_config": {
+    "server_url": "https://your-seatable-server.com",
+    "api_token": "your_api_token",
+    "base_name": "your_base_name"
+  }
+}

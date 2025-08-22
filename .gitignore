@@ -52,3 +52,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Business configuration files (sensitive data)
+memo*.json
+
+# Build directories
+dist/
+build/

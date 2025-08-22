@@ -80,22 +80,13 @@ SEATABLE_SERVER_URL=https://cloud.seatable.io
 
 ### 任务配置文件
 
-每个同步任务对应一个JSON配置文件：
+每个同步任务对应一个JSON配置文件。参考 `sample.json.example` 创建具体的配置文件：
 
-| 配置文件 | 任务名称 | 说明 |
-|---------|----------|------|
-| `memo-contract.json` | 合同同步 | 合同相关数据同步 |
-| `memo-os.json` | 自有软件同步 | 自有软件项目数据 |
-| `memo-progress.json` | 项目进度同步 | 项目进度跟踪数据 |
-| `memo-rd.json` | 预算同步 | 预算管理数据 |
-| `memo-worktime.json` | 工时数据同步 | 工时统计数据 |
-| `memo-payin.json` | 回款信息同步 | 财务回款数据 |
-| `memo-pi.json` | OA项目编号同步 | OA系统项目编号 |
-| `memo-project.json` | OA立项编号同步 | OA系统立项编号 |
-| `memo-gssales.json` | OA销售团队同步 | 销售团队信息 |
-| `memo-yzwq.json` | 已中未签同步 | 中标未签约项目 |
-| `memo-outsource.json` | 立项研发同步 | 研发项目立项数据 |
-| `memo-purchase.json` | 外包同步 | 外包项目数据 |
+- 创建具体业务配置文件（如 `memo-xxx.json`）
+- 根据实际需求配置同步任务
+- 配置文件包含数据库连接、字段映射等信息
+
+**注意**: 实际配置文件已加入 `.gitignore`，不会被提交到版本控制系统。
 
 #### 配置文件结构
 
@@ -163,10 +154,10 @@ mysql-sea-sync/
 ├── main.py                           # 主程序文件
 ├── requirements.txt                  # Python依赖
 ├── .env.example                     # 环境变量模板
-├── memo-*.json                      # 各任务配置文件
+├── sample.json.example              # 配置文件模板
+├── memo-*.json                      # 各任务配置文件（已忽略）
 ├── .github/workflows/build.yml      # GitHub Actions构建配置
 ├── GITHUB_ACTIONS_GUIDE.md         # GitHub自动构建指南
-├── BUILD.md                         # 构建说明
 └── README.md                        # 本说明文件
 ```
 
@@ -192,9 +183,9 @@ mysql-sea-sync/
      # 添加新的任务选项
      13: {
        "name": "新任务同步",
-       "db": "数据库名",
-       "token": "SeaTable API Token",
-       "config_file": "配置文件名.json",
+       "db": "your_database_name",
+       "token": "your_seatable_api_token",
+       "config_file": "your_config_file.json",
        "mysql_config": mysql_config_1
      }
    }
@@ -205,8 +196,8 @@ mysql-sea-sync/
 ```json
 "field_mappings": {
   "mysql_column_name": "seatable_column_name",
-  "contract_code": "合同编号",
-  "contract_amount": "合同金额"
+  "source_field1": "target_field1",
+  "source_field2": "target_field2"
 }
 ```
 
